@@ -8,7 +8,7 @@ public class Task {
     public Task(int clientID, int time, int priority) {
         this.taskID=lastTaskID++;
         this.clientID=clientID;
-        this.time=Math.abs(time%5);
+        this.time=Math.abs(time%15)+1;
         this.priority=Math.abs(priority%10);
     }
 
@@ -20,8 +20,5 @@ public class Task {
                 ", time=" + time +
                 ", priority=" + priority +
                 '}';
-    }
-    public String taskIDToString(){
-        return "Task " + taskID;
     }
 }

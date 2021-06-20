@@ -1,47 +1,32 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class Unpacker implements Runnable{
+public class Unpacker implements Runnable {
     private static BufferedReader reader; // поток чтения из сокета
-    private static BufferedWriter writer; // поток записи в сокет
 
-    Unpacker (Socket socket) throws IOException {
+    Unpacker(Socket socket) throws IOException {
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
 
-    private boolean isOn=true;
     @Override
     public void run() {
         try {
-            try {
-                while(isOn){
-                    TimeUnit.SECONDS.sleep(1);
-                    System.out.println("Сервер: проверяю входящие");
-                    String request = reader.readLine();
-                    if (request == null)
-                        continue;
+            while (true) {
+                TimeUnit.SECONDS.sleep(1);
+                //System.out.println("#Unpacker: " + "checking");
 
-                    if (!request.equals("NO TASK"))
-                        break;
+                String request = reader.readLine();
+                if (request == null)
+                    continue;
+                if (request.equals("ENDTASK"))
+                    break;
 
-                    System.out.println("Server answer is: " + reader.readLine());
-                }
-            } finally {
-                //reader.close();
-                //writer.close();
+                System.out.println("#Unpacker: " + "Server answer: " + reader.readLine());
             }
-        }
-        catch (IOException | InterruptedException e) {
+            reader.close();
+        } catch (IOException | InterruptedException e) {
             System.err.println(e);
         }
-    }
-    private static void sending(String line) throws IOException {
-        writer.write(line);
-        writer.newLine();
-        writer.flush();
     }
 }

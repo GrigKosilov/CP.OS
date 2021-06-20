@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Task implements Comparable<Task> {
     private final int clientID;
     private final int taskID;
@@ -21,6 +19,13 @@ public class Task implements Comparable<Task> {
         priority=Integer.parseInt(dataBuf.substring(0, data.indexOf("}")).trim());
     }
 
+    public Task() {
+        clientID=0;
+        taskID=0;
+        time=0;
+        priority=Integer.MAX_VALUE;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -36,29 +41,6 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task other) {
-        if (this.priority == other.priority) {
-            return 0;
-        } else if (this.priority < other.priority) {
-            return -1;
-        } else {
-            return 1;
-        }
+        return Integer.compare(this.priority, other.priority);
     }
 }
-
-/*
-    private Letter[] command;
-    private boolean block; // блокировка, выставляемая обработчиком
-    private int count; // количество обработанных символов
-
-    public Task(String word){
-        this.command = new Letter[word.length()];
-        for (int i = 0; i < word.length(); i++){
-            this.command[i] = new Letter(word.charAt(i));
-        }
-        this.block = false;
-        this.count = 0;
-    }
-
-
- */
